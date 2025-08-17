@@ -1,6 +1,6 @@
 """
 generate.py – build typed SDKs for every FastAPI service installed under
-`obo_service.<service>.main`, using a YAML override.
+`ab_service.<service>.main`, using a YAML override.
 
 Run:
     poetry run generate            # real generation
@@ -30,8 +30,8 @@ app = typer.Typer(add_completion=False)
 # ------------------------------------------------------------------ #
 # Paths                                                              #
 # ------------------------------------------------------------------ #
-ROOT = Path(__file__).resolve().parent  # src/obo_client_generator/
-REPO = next(p for p in ROOT.parents if p.name == "obo_client")
+ROOT = Path(__file__).resolve().parent  # src/ab_client_generator/
+REPO = next(p for p in ROOT.parents if p.name == "ab_client")
 CLIENT_DIR = REPO  # generated SDKs live here
 
 
@@ -39,13 +39,13 @@ CLIENT_DIR = REPO  # generated SDKs live here
 # Helper: iterate over namespace services                            #
 # ------------------------------------------------------------------ #
 def iter_service_modules() -> Iterator[Tuple[str, ModuleType]]:
-    """Yield (service_name, module) for every `obo_service.<svc>.main` with app."""
+    """Yield (service_name, module) for every `ab_service.<svc>.main` with app."""
     try:
-        ns_pkg = importlib.import_module("obo_service")
+        ns_pkg = importlib.import_module("ab_service")
     except ImportError:
         return  # namespace package not installed
 
-    for info in pkgutil.walk_packages(ns_pkg.__path__, prefix="obo_service."):
+    for info in pkgutil.walk_packages(ns_pkg.__path__, prefix="ab_service."):
         if not info.name.endswith(".main"):
             continue
         service = info.name.split(".")[1]
@@ -131,7 +131,7 @@ def generate(
         typer.echo(f"✅  [{service}] SDK ready\n")
 
     if not any_found:
-        typer.echo("❗  No FastAPI services with `app` found in the 'obo_service.' namespace")
+        typer.echo("❗  No FastAPI services with `app` found in the 'ab_service.' namespace")
 
 
 def main() -> None:  # Poetry entry-point

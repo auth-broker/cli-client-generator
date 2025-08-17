@@ -6,7 +6,7 @@ requires = ["hatchling"]
 dev = [
   "debugpy>=1.8.14,<2",
   "isort>=6.0.1,<7",
-  "obo-test-fixtures",
+  "ab-test-fixtures",
   "pre-commit>=4.2.0,<5",
   "pytest-asyncio>=1.0.0,<2",
   "pytest-cov>=6.2.1,<7",
@@ -19,27 +19,27 @@ dev = [
 authors = [{email = "53892067+mattcoulter7@users.noreply.github.com", name = "Matthew Coulter"}]
 dependencies = [
   "fastapi>=0.115.14,<0.116",
-  "obo-token-validator-service",
+  "ab-token-validator-service",
   "openapi-python-client>=0.25.1,<0.26",
   "typer>=0.16.0,<0.17"
 ]
 description = ""
-name = "obo-client-generator"
+name = "ab-client-generator"
 readme = "README.md"
 requires-python = ">=3.12, <4"
 version = "0.1.0"
 
 [project.scripts]
-cli = "src.obo_client_generator.cli:app"
+cli = "src.ab_client_generator.cli:app"
 
 [tool.hatch.build.targets.sdist]
-include = ["src/obo_client_generator"]
+include = ["src/ab_client_generator"]
 
 [tool.hatch.build.targets.wheel]
-include = ["src/obo_client_generator"]
+include = ["src/ab_client_generator"]
 
 [tool.hatch.build.targets.wheel.sources]
-"src/obo_client_generator" = "obo_client_generator"
+"src/ab_client_generator" = "ab_client_generator"
 
 [tool.pytest.ini_options]
 asyncio_default_fixture_loop_scope = "session"
@@ -71,8 +71,3 @@ select = [
   "UP", # pyupgrade
   "W" # pycodestyle warnings
 ]
-
-[tool.uv]
-
-[tool.uv.sources]
-obo-token-validator-service = {editable = true, path = "../../obo_service/obo-token-validator"}
