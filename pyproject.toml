@@ -18,7 +18,7 @@ dev = [
 [project]
 authors = [{email = "53892067+mattcoulter7@users.noreply.github.com", name = "Matthew Coulter"}]
 dependencies = [
-  "fastapi>=0.115.14,<0.116",
+  "fastapi>=0.115.14,<0.117",
   "ab-token-validator-service",
   "openapi-python-client>=0.25.1,<0.26",
   "typer>=0.16.0,<0.17"
