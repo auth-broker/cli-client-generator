@@ -1,5 +1,4 @@
-"""
-generate.py – build typed SDKs for every FastAPI service installed under
+"""generate.py – build typed SDKs for every FastAPI service installed under
 `ab_service.<service>.main`, using a YAML override.
 
 Run:
@@ -17,9 +16,9 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from collections.abc import Iterator
 from pathlib import Path
 from types import ModuleType
-from typing import Iterator, Tuple
 
 import typer
 import yaml
@@ -30,15 +29,14 @@ app = typer.Typer(add_completion=False)
 # ------------------------------------------------------------------ #
 # Paths                                                              #
 # ------------------------------------------------------------------ #
-ROOT = Path(__file__).resolve().parent  # src/ab_client_generator/
-REPO = next(p for p in ROOT.parents if p.name == "ab_client")
-CLIENT_DIR = REPO  # generated SDKs live here
+RUN_DIR = Path.cwd()
+ORG_DIR = RUN_DIR.parent  # org root (contains all packages)
 
 
 # ------------------------------------------------------------------ #
 # Helper: iterate over namespace services                            #
 # ------------------------------------------------------------------ #
-def iter_service_modules() -> Iterator[Tuple[str, ModuleType]]:
+def iter_service_modules() -> Iterator[tuple[str, ModuleType]]:
     """Yield (service_name, module) for every `ab_service.<svc>.main` with app."""
     try:
         ns_pkg = importlib.import_module("ab_service")
@@ -65,7 +63,6 @@ def generate(
     dry: bool = typer.Option(False, "--dry", "--dry-run", help="Preview only, don't write SDKs"),
 ) -> None:
     """Generate (or preview) client SDKs for each FastAPI service."""
-    typer.echo(f"🏗️  Repo root: {REPO}")
     if dry:
         typer.echo("🌿  DRY-RUN – no SDKs will be written.\n")
 
@@ -78,13 +75,11 @@ def generate(
         client_folder_name = service.replace("_", "-") + "-client"
         pkg_name = f"{service}_client"
 
-        spec_path = CLIENT_DIR / f"{service}_openapi.json"
-        sdk_dst = CLIENT_DIR / client_folder_name
+        spec_path = ORG_DIR / f"{service}_openapi.json"
+        sdk_dst = ORG_DIR / client_folder_name
 
         # 1. Dump OpenAPI spec
-        spec = get_openapi(
-            title=fastapi_app.title, version=fastapi_app.version, routes=fastapi_app.routes
-        )
+        spec = get_openapi(title=fastapi_app.title, version=fastapi_app.version, routes=fastapi_app.routes)
         spec_path.write_text(json.dumps(spec, indent=2))
         typer.echo(f"🔧  [{service}] openapi.json → {spec_path}")
 

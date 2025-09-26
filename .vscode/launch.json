@@ -5,53 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "pytest",
+      "name": "Python Debugger: Current File with Arguments",
       "type": "debugpy",
       "request": "launch",
-      "module": "pytest",
-      "args": ["-vv"],               // full suite, verbose
-      "justMyCode": false,
+      "program": "${file}",
       "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}"
-    },
-    {
-      "name": "pytest: current module",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "pytest",
-      "args": [
-        "-vv",
-        "${fileDirname}"             // every test in this directory / package
-      ],
-      "justMyCode": false,
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}"
-    },
-    {
-      "name": "pytest: current file",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "pytest",
-      "args": [
-        "-vv",
-        "${relativeFile}"            // only the file you’re editing
-      ],
-      "justMyCode": false,
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}"
-    },
-    {
-      "name": "pytest: current test",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "pytest",
-      "args": [
-        "-vv",
-        "${relativeFile}::${selectedText}"   // highlight or put caret on test name
-      ],
-      "justMyCode": false,
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}"
+      "args": "${command:pickArgs}"
     }
   ]
 }
