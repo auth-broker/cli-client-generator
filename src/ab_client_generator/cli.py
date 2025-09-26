@@ -68,15 +68,16 @@ def generate(
 
     any_found = False
 
-    for package_name, mod in iter_service_modules():
+    for module, mod in iter_service_modules():
         any_found = True
         fastapi_app = mod.app  # type: ignore[attr-defined]
-        service_name = "service-" + package_name.replace("_", "-")
-        client_folder_name = "client-" + service_name
+        package_name = module.replace("_", "-")
+        service_name = "service-" + package_name
+        client_name = "client-" + package_name
         # TODO: use src/ab_client/{package}
 
         spec_path = ORG_DIR / f"{service_name}-openapi.json"
-        sdk_dst = ORG_DIR / client_folder_name
+        sdk_dst = ORG_DIR / client_name
 
         # 1. Dump OpenAPI spec
         spec = get_openapi(title=fastapi_app.title, version=fastapi_app.version, routes=fastapi_app.routes)
@@ -94,8 +95,8 @@ def generate(
 
         # 3. Build YAML override (works on every generator version)
         cfg_data = {
-            "package_name_override": package_name,
-            "project_name_override": package_name,
+            "package_name_override": module,
+            "project_name_override": module,
         }
         with tempfile.NamedTemporaryFile("w", delete=False, suffix=".yml") as tmp:
             yaml.safe_dump(cfg_data, tmp)
