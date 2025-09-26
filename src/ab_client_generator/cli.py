@@ -68,20 +68,20 @@ def generate(
 
     any_found = False
 
-    for service, mod in iter_service_modules():
+    for package_name, mod in iter_service_modules():
         any_found = True
         fastapi_app = mod.app  # type: ignore[attr-defined]
+        service_name = "service-" + package_name.replace("_", "-")
+        client_folder_name = "client-" + service_name
+        # TODO: use src/ab_client/{package}
 
-        client_folder_name = service.replace("_", "-") + "-client"
-        pkg_name = f"{service}_client"
-
-        spec_path = ORG_DIR / f"{service}_openapi.json"
+        spec_path = ORG_DIR / f"{service_name}-openapi.json"
         sdk_dst = ORG_DIR / client_folder_name
 
         # 1. Dump OpenAPI spec
         spec = get_openapi(title=fastapi_app.title, version=fastapi_app.version, routes=fastapi_app.routes)
         spec_path.write_text(json.dumps(spec, indent=2))
-        typer.echo(f"🔧  [{service}] openapi.json → {spec_path}")
+        typer.echo(f"🔧  [{service_name}] openapi.json → {spec_path}")
 
         # 2. Clean/create SDK directory
         if sdk_dst.exists():
@@ -94,8 +94,8 @@ def generate(
 
         # 3. Build YAML override (works on every generator version)
         cfg_data = {
-            "package_name_override": pkg_name,
-            "project_name_override": pkg_name,
+            "package_name_override": package_name,
+            "project_name_override": package_name,
         }
         with tempfile.NamedTemporaryFile("w", delete=False, suffix=".yml") as tmp:
             yaml.safe_dump(cfg_data, tmp)
@@ -121,9 +121,9 @@ def generate(
             continue
 
         # 5. Run generator
-        typer.echo(f"🚀  [{service}] Generating SDK → {sdk_dst}")
+        typer.echo(f"🚀  [{service_name}] Generating SDK → {sdk_dst}")
         subprocess.run(cmd, check=True)
-        typer.echo(f"✅  [{service}] SDK ready\n")
+        typer.echo(f"✅  [{service_name}] SDK ready\n")
 
     if not any_found:
         typer.echo("❗  No FastAPI services with `app` found in the 'ab_service.' namespace")
