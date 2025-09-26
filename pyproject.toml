@@ -29,6 +29,10 @@ readme = "README.md"
 requires-python = ">=3.12, <4"
 version = "0.1.0"
 
+[tool.uv.sources]
+ab-token-validator-service = { git = "https://github.com/auth-broker/package-token-validator-service", rev = "0.1.0" }
+ab-test-fixtures  = { git = "https://@github.com/auth-broker/package-test-fixtures", rev = "0.1.0" }
+
 [project.scripts]
 cli = "src.ab_client_generator.cli:app"
 
