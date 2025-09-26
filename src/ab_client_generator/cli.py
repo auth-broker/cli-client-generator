@@ -86,10 +86,7 @@ def generate(
 
         # 2. Clean/create SDK directory
         if sdk_dst.exists():
-            if dry:
-                typer.echo(f"[DRY] Would remove {sdk_dst}")
-            else:
-                shutil.rmtree(sdk_dst)
+            typer.echo(f"Directory {sdk_dst} already exists, will overwrite.")
         if not dry:
             sdk_dst.mkdir(parents=True, exist_ok=True)
 
