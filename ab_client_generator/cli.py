@@ -98,8 +98,8 @@ def generate(
 
         # 3. Build YAML override (works on every generator version)
         cfg_data = {
-            "package_name_override": module,
-            "project_name_override": module,
+            "package_name_override": f"ab_client_{module}",
+            "project_name_override": f"ab-{client_name}",
         }
         with tempfile.NamedTemporaryFile("w", delete=False, suffix=".yml") as tmp:
             yaml.safe_dump(cfg_data, tmp)
