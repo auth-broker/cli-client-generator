@@ -86,6 +86,12 @@ def generate(
 
         # 2. Clean/create SDK directory
         if sdk_dst.exists():
+            # Remove any existing `uv.lock` file in the SDK directory
+            uv_lock_path = sdk_dst / "uv.lock"
+            if uv_lock_path.exists():
+                typer.echo(f"⚠️  Found existing uv.lock file, removing it: {uv_lock_path}")
+                uv_lock_path.unlink()
+
             typer.echo(f"Directory {sdk_dst} already exists, will overwrite.")
         if not dry:
             sdk_dst.mkdir(parents=True, exist_ok=True)
@@ -123,7 +129,18 @@ def generate(
         subprocess.run(cmd, check=True)
         typer.echo(f"✅  [{service_name}] SDK ready\n")
 
-        # 6. TODO: run `uvx migrate-to-uv` in the SDK directory
+        # 6. Migrate the generated project to uv (if available)
+        uvx_path = shutil.which("uvx") or shutil.which("uvx.exe") or shutil.which("uv")
+        if uvx_path:
+            try:
+                typer.echo(f"🔧  [{service_name}] Running 'uvx migrate-to-uv' in {sdk_dst}")
+                subprocess.run([uvx_path, "migrate-to-uv"], cwd=sdk_dst, check=True)
+                typer.echo(f"✅  [{service_name}] uv migration complete\n")
+            except subprocess.CalledProcessError as e:
+                typer.echo(f"⚠️  [{service_name}] uv migration failed: {e}\n")
+        else:
+            typer.echo(f"⚠️  [{service_name}] 'uvx' not found on PATH; skipping uv migration\n")
+
     if not any_found:
         typer.echo("❗  No FastAPI services with `app` found in the 'ab_service.' namespace")
 
