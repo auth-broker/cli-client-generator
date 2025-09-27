@@ -123,6 +123,7 @@ def generate(
         subprocess.run(cmd, check=True)
         typer.echo(f"✅  [{service_name}] SDK ready\n")
 
+        # 6. TODO: run `uvx migrate-to-uv` in the SDK directory
     if not any_found:
         typer.echo("❗  No FastAPI services with `app` found in the 'ab_service.' namespace")
 

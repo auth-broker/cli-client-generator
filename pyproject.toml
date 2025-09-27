@@ -31,16 +31,16 @@ requires-python = ">=3.12, <4"
 version = "0.1.3"
 
 [project.scripts]
-cli = "src.ab_client_generator.cli:app"
+cli = "ab_client_generator.cli:app"
 
 [tool.hatch.build.targets.sdist]
-include = ["src/ab_client_generator"]
+include = ["ab_client_generator"]
 
 [tool.hatch.build.targets.wheel]
-include = ["src/ab_client_generator"]
+include = ["ab_client_generator"]
 
 [tool.hatch.build.targets.wheel.sources]
-"src/ab_client_generator" = "ab_client_generator"
+"ab_client_generator" = "ab_client_generator"
 
 [tool.pytest.ini_options]
 asyncio_default_fixture_loop_scope = "session"
