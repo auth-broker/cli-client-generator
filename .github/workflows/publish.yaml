@@ -14,7 +14,10 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: shared-github-ubuntu-latest-small
+    runs-on: 
+      group: Default
+    timeout-minutes: 15
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
