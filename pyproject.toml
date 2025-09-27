@@ -20,7 +20,7 @@ authors = [{email = "53892067+mattcoulter7@users.noreply.github.com", name = "Ma
 dependencies = [
   "ab-auth-client-service>=0.1.2,<1",
   "ab-token-validator-service>=0.1.2,<1",
-  "fastapi>=0.115.14,<0.116",
+  "fastapi>=0.115.14,<0.118",
   "openapi-python-client>=0.25.1,<0.26",
   "typer>=0.16.0,<0.17"
 ]
