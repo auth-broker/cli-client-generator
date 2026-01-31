@@ -18,8 +18,8 @@ dev = [
 [project]
 authors = [{email = "53892067+mattcoulter7@users.noreply.github.com", name = "Matthew Coulter"}]
 dependencies = [
-  "ab-openapi-python-generator>=2.2.2",
-  "ab-auth-client-service",
+  "ab-openapi-python-generator>=2.2.3",
+  "ab-auth-client-service>=0.2.2",
   "ab-token-validator-service",
   "ab-user-service",
   "ab-token-issuer-service",
