@@ -21,7 +21,7 @@ dependencies = [
   "ab-openapi-python-generator>=2.2.7",
   "ab-bff-service",
   "ab-auth-client-service",
-  "ab-token-validator-service>=0.3.0",
+  "ab-token-validator-service>=0.3.1",
   "ab-user-service",
   "ab-token-issuer-service",
   "ab-token-issuer-store-service",
